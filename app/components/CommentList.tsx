@@ -1,11 +1,26 @@
-import { Box, Typography, List } from "@mui/material";
+import { Box, Typography, List, IconButton } from "@mui/material";
 import { Comment } from "../lib/definitions";
+import { deleteCommentByID } from "../lib/data";
+import { Delete } from "@mui/icons-material";
 
 interface CommentListProps {
     comments: Comment[];
+    loggedInUserID: string;
 }
 
-export default function CommentList({ comments }: CommentListProps) {
+export default function CommentList({ comments, loggedInUserID }: CommentListProps) {
+    const isCommenter = (commentUserID: string) => loggedInUserID === commentUserID;
+    async function handleDelete(threadID: string, commentID: string) {
+        if (confirm("Are you sure you want to delete this comment?")) {
+            try {
+                await deleteCommentByID(threadID, commentID);
+                alert("Comment deleted successfully!");
+            } catch (error) {
+                console.error("Failed to delete comment:", error);
+            }
+        }
+    };
+
     if (comments.length === 0) {
         return (
             <Typography
@@ -41,6 +56,16 @@ export default function CommentList({ comments }: CommentListProps) {
                             timeStyle: "short",
                         })}
                     </Typography>
+                    {/* Delete Button (Visible to Owner Only) */}
+                    {isCommenter(comment.UserID) && (
+                        <IconButton
+                            aria-label="Delete comment"
+                            color="error"
+                            onClick={() => handleDelete(comment.ThreadID, comment.ID)}
+                        >
+                            <Delete />
+                        </IconButton>
+                    )}
                 </Box>
             ))}
         </List >
