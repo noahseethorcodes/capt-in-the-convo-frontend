@@ -1,6 +1,6 @@
 'use client';
 import React from "react";
-import ThreadCard from "./ThreadCard";
+import ThreadListCard from "./ThreadListCard";
 import { Box } from "@mui/material";
 import { Thread } from "../lib/definitions";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export default function ThreadList({ threads }: ThreadListProps) {
         <div>
             <Box className="flex flex-col items-center mt-8">
                 {threads.map((thread) => (
-                    <ThreadCard
+                    <ThreadListCard
                         key={thread.ID}
                         title={thread.Title}
                         content={thread.Content}

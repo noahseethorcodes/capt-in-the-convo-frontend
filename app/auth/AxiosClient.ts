@@ -39,12 +39,10 @@ BackendAPIClient.interceptors.response.use(
 
                     // Update session with new tokens
                     await updateSessionTokens(accessToken, refreshToken);
-                    console.log("New Access Token:", accessToken);
 
                     // Clone the original config object
                     const originalRequest = { ...error.config };
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                    console.log("Original Request Headers:", originalRequest.headers);
 
                     // Retry the original request with the new access token
                     return axios.request(originalRequest);

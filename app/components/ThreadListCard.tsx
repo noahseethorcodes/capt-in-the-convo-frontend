@@ -4,17 +4,17 @@ import CommentTwoToneIcon from "@mui/icons-material/Comment";
 import { Tag } from "../lib/definitions";
 import TagBoxes from "./TagBoxes";
 
-interface ThreadCardProps {
+interface ThreadListCardProps {
     title: string;
     content: string;
     author: string;
     createdAt: string;
     commentsCount: string;
-    tags: Tag[];
+    tags: Tag[] | null;
     onClick: () => void;
 }
 
-export default function ThreadCard({ title, content, author, createdAt, commentsCount, tags, onClick }: ThreadCardProps) {
+export default function ThreadListCard({ title, content, author, createdAt, commentsCount, tags, onClick }: ThreadListCardProps) {
     return (
         <Card className="shadow-md mb-6 mx-auto w-full max-w-lg rounded-lg transition-transformation duration-300 ease-in-out hover:cursor-pointer hover:shadow-lg hover:scale-105"
             variant="outlined"

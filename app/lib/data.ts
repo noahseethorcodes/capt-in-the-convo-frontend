@@ -81,8 +81,8 @@ export async function postComment(prevState: string, formData: FormData) {
 export async function postThread(prevState: CreateConvoFormState, formData: FormData) {
     const title = formData.get("title");
     const content = formData.get("content");
-    const tags = formData.get("tags") as String;
-    const tagsArray = tags.split(',');
+    const tags = formData.get("tags") as string;
+    const tagsArray = tags ? tags.split(',') : [];
 
     let errors = ""
 
@@ -123,5 +123,31 @@ export async function postThread(prevState: CreateConvoFormState, formData: Form
         if (redirectPath) {
             redirect(redirectPath);
         }
+    }
+}
+
+export async function deleteThreadByID(threadID: string) {
+    try {
+        console.log(`Deleting thread ${threadID}...`);
+        const response = await BackendAPIClient.delete<String>(`/threads/${threadID}`);
+        return response.data;
+    } catch (error) {
+        console.error('Backend Error:', error);
+        throw new Error(`Failed to delete thread ${threadID}.`);
+    } finally {
+        redirect('/convos');
+    }
+}
+
+export async function deleteCommentByID(threadID: string, commentID: string) {
+    try {
+        console.log(`Deleting comment ${commentID}...`);
+        const response = await BackendAPIClient.delete<string>(`/comments/${commentID}`);
+        return response.data;
+    } catch (error) {
+        console.error('Backend Error:', error);
+        throw new Error(`Failed to delete comment ${commentID}.`);
+    } finally {
+        redirect(`/convos/${threadID}`);
     }
 }
