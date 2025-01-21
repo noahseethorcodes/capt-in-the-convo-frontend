@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tag } from "../lib/definitions";
-import { Box, InputLabel, Select, OutlinedInput, MenuItem, Button } from "@mui/material";
+import { Box, InputLabel, Select, OutlinedInput, MenuItem, Button, TextField } from "@mui/material";
 
 interface TagFilterProps {
     tags: Tag[]
     initialSelectedTags: string[]
+    initialSearch: string
 }
 
-export default function TagFilter({ tags, initialSelectedTags }: TagFilterProps) {
+export default function SearchAndFilter({ tags, initialSelectedTags, initialSearch }: TagFilterProps) {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
+    const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
     const [selectedTags, setSelectedTags] = useState<string[]>(initialSelectedTags);
 
     function handleFilter(e: any) {
@@ -29,9 +31,24 @@ export default function TagFilter({ tags, initialSelectedTags }: TagFilterProps)
         replace(`${pathname}?${params.toString()}`);
     }
 
+    function handleSearch(e: any) {
+        const currentSearchQuery = e.target.value;
+        setSearchQuery(currentSearchQuery)
+        const params = new URLSearchParams(searchParams);
+        params.set('search', currentSearchQuery)
+        replace(`${pathname}?${params.toString()}`);
+    }
+
     return (
-        <Box sx={{ my: 4 }}>
-            <InputLabel>Filter by Tags</InputLabel>
+        <Box className="my-4">
+            <TextField
+                fullWidth
+                label="Search"
+                value={searchQuery}
+                onChange={handleSearch}
+            >
+            </TextField>
+            <InputLabel className="mt-2">Filter by Tags</InputLabel>
             <Select
                 multiple
                 value={selectedTags}

@@ -1,11 +1,12 @@
 import React from "react";
 import ThreadList from "@/app/components/ThreadList";
 import { fetchTags, fetchThreads } from "@/app/lib/data";
-import TagFilter from "@/app/components/TagFilter";
+import SearchAndFilter from "@/app/components/SearchAndFilter";
 
 export default async function ThreadsPage(props: {
   searchParams?: Promise<{
-    tag?: string[]
+    tag?: string[],
+    search?: string
   }>;
 }) {
   const searchParams = await props.searchParams;
@@ -14,13 +15,14 @@ export default async function ThreadsPage(props: {
   if (!Array.isArray(tagsQuery)) {
     tagsQuery = tagsQuery ? [tagsQuery] : [];
   }
-  console.log("Query: ", tagsQuery);
-  const threads = await fetchThreads(tagsQuery);
+  const searchQuery = searchParams?.search || '';
+
+  const threads = await fetchThreads(tagsQuery, searchQuery);
   const tags = await fetchTags();
 
   return (
     <div>
-      <TagFilter tags={tags} initialSelectedTags={tagsQuery} />
+      <SearchAndFilter tags={tags} initialSelectedTags={tagsQuery} initialSearch={searchQuery} />
       <ThreadList threads={threads} />
     </div>
   );

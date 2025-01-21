@@ -5,11 +5,14 @@ import { redirect } from "next/navigation";
 import { getUserID } from "../auth/TokenHandling";
 import { CreateConvoFormState } from "./form-validation";
 
-export async function fetchThreads(tags: string[]) {
+export async function fetchThreads(tags: string[], searchQuery: string) {
     try {
         let query = ''
         console.log(typeof (tags))
         tags.forEach((tag: string) => query += `tag=${tag}&`)
+        if (searchQuery) {
+            query += `search=${searchQuery}`
+        }
         console.log(`Fetching threads via /threads${query}...`);
         const response = await BackendAPIClient.get<Thread[]>(`/threads?${query}`);
         return response.data;
