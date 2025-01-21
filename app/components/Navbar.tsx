@@ -15,11 +15,7 @@ export default function Navbar() {
     const pathname = usePathname(); // Get the current route
 
     return (
-        <Box position="static" color="default" sx={{
-            width: "100%",
-            maxWidth: 600,
-            borderRadius: "10px",
-        }}>
+        <Box position="static" color="default">
             <Toolbar>
                 <Box>
                     {links.map((link) => (

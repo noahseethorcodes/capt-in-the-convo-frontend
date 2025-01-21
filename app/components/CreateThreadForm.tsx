@@ -8,7 +8,7 @@ import { CreateConvoFormState } from "../lib/form-validation";
 import { Tag } from "../lib/definitions";
 
 export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
-    const [selectedTags, setSelectedTags] = useState<String[]>([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const initalState = {
         message: "",
         data: {
@@ -22,7 +22,7 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
         <Box
             component="form"
             action={action}
-            sx={{ my: "2", width: "50%", }}
+            sx={{ my: "2", width: "100%", }}
         >
             <Typography variant="h4" className="text-center mb-4 py-4">
                 Create a Convo!
@@ -44,7 +44,7 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
             <Select
                 multiple
                 value={selectedTags}
-                onChange={(e) => setSelectedTags(e.target.value as String[])}
+                onChange={(e) => setSelectedTags(e.target.value as string[])}
                 input={<OutlinedInput label="Tags" placeholder="Choose Tags!" />}
                 name="tags"
                 fullWidth
