@@ -1,15 +1,17 @@
 import Navbar from "@/app/components/Navbar";
-import { Divider } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex items-center flex-col min-h-screen">
-            {/* Header */}
-            <Navbar />
+            <Box className="w-full max-w-[620px] rounded-[10px] px-6">
+                {/* Header */}
+                <Navbar />
 
-            {/* Main Content */}
-            {children}
+                {/* Main Content */}
+                {children}
+            </Box>
         </div>
     );
 }

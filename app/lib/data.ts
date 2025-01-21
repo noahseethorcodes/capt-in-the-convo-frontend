@@ -5,10 +5,13 @@ import { redirect } from "next/navigation";
 import { getUserID } from "../auth/TokenHandling";
 import { CreateConvoFormState } from "./form-validation";
 
-export async function fetchThreads() {
+export async function fetchThreads(tags: string[]) {
     try {
-        console.log('Fetching threads...');
-        const response = await BackendAPIClient.get<Thread[]>("/threads");
+        let query = ''
+        console.log(typeof (tags))
+        tags.forEach((tag: string) => query += `tag=${tag}&`)
+        console.log(`Fetching threads via /threads${query}...`);
+        const response = await BackendAPIClient.get<Thread[]>(`/threads?${query}`);
         return response.data;
     } catch (error) {
         console.error('Backend Error:', error);
