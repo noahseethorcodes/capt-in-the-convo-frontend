@@ -5,6 +5,7 @@ import TopBanner from '@/app/components/TopBanner';
 import { Roboto } from 'next/font/google';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/app/theme';
+import { Toaster } from "react-hot-toast";
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body className={roboto.variable}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
+            <Toaster />
             <TopBanner />
             {children}
           </ThemeProvider>

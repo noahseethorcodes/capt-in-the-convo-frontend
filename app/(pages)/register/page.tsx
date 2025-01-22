@@ -1,10 +1,10 @@
 import React from "react";
-import LoginForm from "@/app/components/LoginForm";
+import RegisterForm from "@/app/components/RegistrationForm";
 
 export default function LoginPage() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <LoginForm />
+            <RegisterForm />
         </div>
     )
 }

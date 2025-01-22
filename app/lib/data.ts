@@ -1,9 +1,10 @@
 'use server';
 import { Comment, Tag, Thread } from "./definitions";
-import BackendAPIClient from "../auth/AxiosClient";
+import BackendAPIClient from "@/app/auth/AxiosClient";
 import { redirect } from "next/navigation";
-import { getUserID } from "../auth/TokenHandling";
+import { getUserID } from "@/app/auth/TokenHandling";
 import { CreateConvoFormState } from "./form-validation";
+import toast from "react-hot-toast";
 
 export async function fetchThreads(tags: string[], searchQuery: string) {
     try {
@@ -60,10 +61,9 @@ export async function postComment(prevState: string, formData: FormData) {
     const thread_id = Number(formData.get("threadID"));
 
     if (content === "") {
-        return "Comment cannot be empty!"
+        return "Comment cannot be empty!";
     }
 
-    let redirectPath: string | null = null
     const data = {
         "content": content,
         "user_id": await getUserID(),
@@ -71,16 +71,12 @@ export async function postComment(prevState: string, formData: FormData) {
     }
     console.log(data);
     try {
-        const response = await BackendAPIClient.post(`/comments`, data);
-        redirectPath = `/convos/${formData.get("threadID")}`;
-        return response.data.message;
+        await BackendAPIClient.post(`/comments`, data);
+        return "Success";
     } catch (error) {
         console.error('Backend Error:', error);
         throw new Error('Failed to post comment.');
-    } finally {
-        if (redirectPath) {
-            redirect(redirectPath);
-        }
+        return '';
     }
 }
 

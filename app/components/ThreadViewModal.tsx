@@ -22,7 +22,7 @@ export default function ThreadViewModal({ thread, comments, loggedInUserID }: Th
     }
 
     return (
-        <Modal open={true} onClose={onModalClose} >
+        <Modal open={true} onClose={onModalClose} className="px-4">
             <Box
                 sx={{
                     backgroundColor: "white",
