@@ -1,64 +1,41 @@
 'use client';
 
 import React, { useState } from "react";
+import { Card, CardContent, Typography, TextField, Button, Box } from "@mui/material";
 import { useActionState } from "react";
-import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
-import {
-    Button,
-    TextField,
-    Typography,
-    Card,
-    CardContent,
-    Box,
-} from "@mui/material";
-import toast from "react-hot-toast";
+import { register } from "../auth/register";
+import { Login } from "@mui/icons-material";
 import Link from "next/link";
-import { PersonAdd } from "@mui/icons-material";
 
-async function handleLoginFormSubmit(
-    prevState: string,
-    formData: FormData
-) {
-    const signInResponse = await signIn("credentials", {
-        redirect: false,
-        username: formData.get("username"),
-        password: formData.get("password"),
-        callbackUrl: "/"
-    });
-    if (signInResponse?.ok) {
-        toast.success("Logged In!")
-        redirect("/convos");
-    }
-    if (signInResponse?.error) {
-        console.log(signInResponse.error);
-        return signInResponse.error;
-    }
-    return "Sign In Failed";
-}
 
-export default function LoginForm() {
-    const [formData, setFormData] = useState({ username: "", password: "" })
-    const [message, formAction, isPending] = useActionState(handleLoginFormSubmit, "");
+export default function RegistrationForm() {
+    const [formData, setFormData] = useState({ username: "", password: "" });
+    const [message, formAction, isPending] = useActionState(register, "");
+
     return (
-        <Card className="shadow-lg w-full max-w-md" sx={{ borderRadius: "12px", }}>
+        <Card className="shadow-lg w-full max-w-md" sx={{ borderRadius: "12px" }}>
             <CardContent>
                 <Typography variant="h5" className="text-center mb-4 py-4">
-                    Login
+                    Register
                 </Typography>
                 <form action={formAction} className="space-y-4">
+                    {/* Username Field */}
                     <TextField
                         id="username"
                         name="username"
                         label="Username"
                         variant="outlined"
                         value={formData.username}
-                        onChange={(e) => setFormData(prevState => ({
-                            ...prevState,
-                            username: e.target.value,
-                        }))}
+                        onChange={(e) =>
+                            setFormData((prevState) => ({
+                                ...prevState,
+                                username: e.target.value,
+                            }))
+                        }
                         fullWidth
                     />
+
+                    {/* Password Field */}
                     <TextField
                         id="password"
                         name="password"
@@ -66,25 +43,31 @@ export default function LoginForm() {
                         type="password"
                         variant="outlined"
                         value={formData.password}
-                        onChange={(e) => setFormData(prevState => ({
-                            ...prevState,
-                            password: e.target.value,
-                        }))}
+                        onChange={(e) =>
+                            setFormData((prevState) => ({
+                                ...prevState,
+                                password: e.target.value,
+                            }))
+                        }
                         fullWidth
                     />
+
+                    {/* Submit Button */}
                     <Button
                         type="submit"
                         variant="contained"
                         color="primary"
-                        disabled={isPending}
                         fullWidth
+                        disabled={isPending}
                         className="mt-2"
                     >
-                        {isPending ? "Verifying..." : "Login"}
+                        {isPending ? "Registering..." : "Register"}
                     </Button>
+
+                    {/* Error/Success Message */}
                     {message && (
                         <Typography
-                            color="error"
+                            color={message.includes("successful") ? "success" : "error"}
                             variant="body2"
                             className="text-center mt-2"
                         >
@@ -100,7 +83,7 @@ export default function LoginForm() {
                 <Box className="flex items-center justify-center mt-2">
                     <Button
                         component={Link}
-                        href="/register"
+                        href="/login"
                         variant="outlined"
                         sx={{
                             width: "33%",
@@ -117,11 +100,11 @@ export default function LoginForm() {
                             },
                         }}
                     >
-                        Register
-                        <PersonAdd />
+                        Login
+                        <Login />
                     </Button>
                 </Box>
             </CardContent>
         </Card>
     );
-};
+}

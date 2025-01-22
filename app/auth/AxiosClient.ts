@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { getServerSession } from "next-auth/next"
 import { getRefreshToken, updateSessionTokens } from "./TokenHandling";

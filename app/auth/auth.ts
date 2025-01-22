@@ -23,11 +23,6 @@ export const authConfig: NextAuthOptions = {
                         password: credentials.password,
                     });
 
-                    // Log the HTTP response for debugging
-                    console.log("HTTP Response Data:", loginResponse.data);
-                    console.log("HTTP Response Status:", loginResponse.status);
-                    console.log("HTTP Response Headers:", loginResponse.headers);
-
                     // If login succeeds, return the user object
                     if (loginResponse.data && loginResponse.data.accessToken) {
                         return {
