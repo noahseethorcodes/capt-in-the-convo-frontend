@@ -43,7 +43,7 @@ export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) 
                 className="text-right block py-2"
             >
                 Posted by <span className="font-semibold">{thread.Username}</span> on{" "}
-                {new Date(thread.CreatedAt).toLocaleString(undefined, {
+                {new Date(thread.CreatedAt).toLocaleString("en-US", {
                     dateStyle: "medium",
                     timeStyle: "short",
                 })}
