@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tag } from "../lib/definitions";
-import { Box, InputLabel, Select, OutlinedInput, MenuItem, Button, TextField } from "@mui/material";
+import { Box, InputLabel, Select, OutlinedInput, MenuItem, Button, TextField, Typography, Divider } from "@mui/material";
+import TagBoxes from "./TagBoxes";
 
 interface TagFilterProps {
     tags: Tag[]
@@ -18,9 +19,14 @@ export default function SearchAndFilter({ tags, initialSelectedTags, initialSear
     const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
     const [selectedTags, setSelectedTags] = useState<string[]>(initialSelectedTags);
 
+    // useEffect(() => {
+    //     console.log(selectedTags);
+    //     console.log(tags.filter((tag) => selectedTags.includes(tag.Name)));
+    // }, [selectedTags]);
+
     function handleFilter(e: any) {
         const currentTags = e.target.value;
-        setSelectedTags(currentTags)
+        setSelectedTags(currentTags);
         const params = new URLSearchParams(searchParams);
         params.delete('tag');
         if (currentTags) {
@@ -48,13 +54,18 @@ export default function SearchAndFilter({ tags, initialSelectedTags, initialSear
                 onChange={handleSearch}
             >
             </TextField>
-            <InputLabel className="mt-2">Filter by Tags</InputLabel>
+            <InputLabel className="mt-2">Filter by Tags:</InputLabel>
+            {selectedTags.length > 0 &&
+                <Box>
+                    <TagBoxes tags={tags.filter((tag) => selectedTags.includes(tag.Name))} />
+                </Box>
+            }
             <Select
                 multiple
                 value={selectedTags}
                 onChange={handleFilter}
-                input={<OutlinedInput placeholder="Select Tags" />}
                 fullWidth
+                className="mt-2"
             >
                 {tags.map((tag) => (
                     <MenuItem key={tag.ID} value={tag.Name}>

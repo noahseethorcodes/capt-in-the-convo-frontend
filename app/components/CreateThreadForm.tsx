@@ -6,6 +6,7 @@ import { useActionState, useState } from "react";
 import { postThread } from "../lib/data"; // Assume postThread is your server action
 import { CreateConvoFormState } from "../lib/form-validation";
 import { Tag } from "../lib/definitions";
+import TagBoxes from "./TagBoxes";
 
 export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -40,12 +41,16 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
             />
 
             {/* Tag Selection Field */}
-            <InputLabel>Tags (can select multiple)</InputLabel>
+            <InputLabel>Select Tags:</InputLabel>
+            {selectedTags.length > 0 &&
+                <Box>
+                    <TagBoxes tags={tags.filter((tag) => selectedTags.includes(tag.Name))} />
+                </Box>
+            }
             <Select
                 multiple
                 value={selectedTags}
                 onChange={(e) => setSelectedTags(e.target.value as string[])}
-                input={<OutlinedInput label="Tags" placeholder="Choose Tags!" />}
                 name="tags"
                 fullWidth
             >
