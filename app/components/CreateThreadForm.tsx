@@ -7,6 +7,8 @@ import { postThread } from "../lib/data"; // Assume postThread is your server ac
 import { CreateConvoFormState } from "../lib/form-validation";
 import { Tag } from "../lib/definitions";
 import TagBoxes from "./TagBoxes";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -17,7 +19,20 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
             content: "",
         }
     }
-    const [state, action, isPending] = useActionState<CreateConvoFormState, FormData>(postThread, initalState);
+    const router = useRouter();
+
+    async function handleSubmit(prevState: CreateConvoFormState, formData: FormData) {
+        const state = await postThread(prevState, formData);
+        if (state.message === 'Success') {
+            toast.success('Convo Posted!')
+            router.push(`/convos`);
+            return state;
+        } else {
+            return state;
+        }
+    }
+
+    const [state, action, isPending] = useActionState<CreateConvoFormState, FormData>(handleSubmit, initalState);
 
     return (
         <Box

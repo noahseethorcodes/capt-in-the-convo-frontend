@@ -39,7 +39,7 @@ async function handleLoginFormSubmit(
 
 export default function LoginForm() {
     const [formData, setFormData] = useState({ username: "", password: "" })
-    const [message, formAction, isPending] = useActionState(handleLoginFormSubmit, "");
+    const [state, formAction, isPending] = useActionState(handleLoginFormSubmit, "");
     return (
         <Card className="shadow-lg w-full max-w-md" sx={{ borderRadius: "12px", }}>
             <CardContent>
@@ -82,13 +82,13 @@ export default function LoginForm() {
                     >
                         {isPending ? "Verifying..." : "Login"}
                     </Button>
-                    {message && (
+                    {state && (
                         <Typography
                             color="error"
                             variant="body2"
                             className="text-center mt-2"
                         >
-                            {message}
+                            {state}
                         </Typography>
                     )}
                 </form>

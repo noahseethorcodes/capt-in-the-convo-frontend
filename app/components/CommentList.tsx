@@ -2,6 +2,8 @@ import { Box, Typography, List, IconButton } from "@mui/material";
 import { Comment } from "../lib/definitions";
 import { deleteCommentByID } from "../lib/data";
 import { Delete } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface CommentListProps {
     comments: Comment[];
@@ -10,14 +12,18 @@ interface CommentListProps {
 
 export default function CommentList({ comments, loggedInUserID }: CommentListProps) {
     const isCommenter = (commentUserID: string) => loggedInUserID === commentUserID;
+    const router = useRouter();
+
     async function handleDelete(threadID: string, commentID: string) {
         if (confirm("Are you sure you want to delete this comment?")) {
-            try {
-                await deleteCommentByID(threadID, commentID);
-                alert("Comment deleted successfully!");
-            } catch (error) {
-                console.error("Failed to delete comment:", error);
+            const response = await deleteCommentByID(threadID, commentID);
+            if (response === "Success") {
+                toast.success("Comment successfully deleted");
+                router.push(`/convos/${threadID}`);
+            } else {
+                toast.error("Couldn't delete this comment");
             }
+
         }
     };
 

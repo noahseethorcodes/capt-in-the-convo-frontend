@@ -76,13 +76,12 @@ export async function postComment(prevState: string, formData: FormData) {
     } catch (error) {
         console.error('Backend Error:', error);
         throw new Error('Failed to post comment.');
-        return '';
     }
 }
 
 export async function postThread(prevState: CreateConvoFormState, formData: FormData) {
-    const title = formData.get("title");
-    const content = formData.get("content");
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
     const tags = formData.get("tags") as string;
     const tagsArray = tags ? tags.split(',') : [];
 
@@ -106,7 +105,6 @@ export async function postThread(prevState: CreateConvoFormState, formData: Form
         }
     }
 
-    let redirectPath: string | null = null
     const data = {
         "title": title,
         "content": content,
@@ -114,42 +112,40 @@ export async function postThread(prevState: CreateConvoFormState, formData: Form
         "tags": tagsArray
     }
     console.log(data);
+
     try {
-        const response = await BackendAPIClient.post(`/threads`, data);
-        redirectPath = `/convos`;
-        return response.data.message;
+        await BackendAPIClient.post(`/threads`, data);
+        return {
+            message: 'Success',
+            data: {
+                title: title,
+                content: content,
+            }
+        }
     } catch (error) {
         console.error('Backend Error:', error);
         throw new Error('Failed to post thread.');
-    } finally {
-        if (redirectPath) {
-            redirect(redirectPath);
-        }
     }
 }
 
 export async function deleteThreadByID(threadID: string) {
     try {
         console.log(`Deleting thread ${threadID}...`);
-        const response = await BackendAPIClient.delete<String>(`/threads/${threadID}`);
-        return response.data;
+        await BackendAPIClient.delete<String>(`/threads/${threadID}`);
+        return 'Success';
     } catch (error) {
         console.error('Backend Error:', error);
         throw new Error(`Failed to delete thread ${threadID}.`);
-    } finally {
-        redirect('/convos');
     }
 }
 
 export async function deleteCommentByID(threadID: string, commentID: string) {
     try {
         console.log(`Deleting comment ${commentID}...`);
-        const response = await BackendAPIClient.delete<string>(`/comments/${commentID}`);
-        return response.data;
+        await BackendAPIClient.delete<string>(`/comments/${commentID}`);
+        return "Success";
     } catch (error) {
         console.error('Backend Error:', error);
         throw new Error(`Failed to delete comment ${commentID}.`);
-    } finally {
-        redirect(`/convos/${threadID}`);
     }
 }
