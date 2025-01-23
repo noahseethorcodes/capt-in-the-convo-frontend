@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, IconButton, Tooltip } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Thread } from "../lib/definitions";
 import TagBoxes from "./TagBoxes";
@@ -20,25 +20,16 @@ export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) 
         if (confirm("Are you sure you want to delete this convo?")) {
             const response = await deleteThreadByID(thread.ID);
             if (response === "Success") {
-                toast.success("Convo successfully deleted");
+                toast.success("Convo Deleted");
                 router.push('/convos');
             } else {
-                toast.error("Couldn't delete this convo");
+                toast.error("Couldn't Delete Convo");
             }
         }
     };
 
     return (
-        <Box
-            sx={{
-                backgroundColor: "#f5f5f5",
-                borderRadius: "8px",
-                padding: "24px",
-                maxWidth: "800px",
-                outline: "none",
-            }}
-
-        >
+        <Box className="bg-[#f5f5f5] rounded-lg p-6 max-w-[800px] outline-none">
             <Typography variant="h5" className="font-bold mb-2">
                 {thread.Title}
             </Typography>
@@ -59,14 +50,21 @@ export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) 
             </Typography>
 
             {/* Delete Button */}
-            {isOwner && (
-                <Button
-                    variant="contained"
-                    color="error"
-                    onClick={handleDelete}
-                    className="mt-2"
-                ><Delete /></Button>
-            )}
+
+            {isOwner &&
+                <Box className="flex justify-end">
+                    <Tooltip title="Delete Thread">
+                        <IconButton
+                            aria-label="Delete convo"
+                            color="primary"
+                            onClick={handleDelete}
+                            size="small"
+                        >
+                            <Delete />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            }
         </Box>
     )
 }

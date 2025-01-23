@@ -1,4 +1,4 @@
-import { Box, IconButton, TextField } from "@mui/material"
+import { Box, IconButton, TextField, Tooltip } from "@mui/material"
 import { Send } from "@mui/icons-material"
 import { useActionState } from "react";
 import { postComment } from "../lib/data";
@@ -24,10 +24,10 @@ export default function AddCommentForm({ threadID }: { threadID: string }) {
         <Box
             component="form"
             action={action}
-            sx={{ my: 2 }}
+            className="my-2"
 
         >
-            <Box sx={{ display: "flex", alignItems: "center", my: 2 }}>
+            <Box className="flex items-center my-2">
 
 
                 <input type="hidden" name="threadID" value={threadID} />
@@ -38,15 +38,17 @@ export default function AddCommentForm({ threadID }: { threadID: string }) {
                     multiline
                     fullWidth
                     disabled={isPending}
-                    sx={{ mr: 1 }}
+                    className="mr-1"
                 />
-                <IconButton
-                    type="submit"
-                    color="primary"
-                    disabled={isPending}
-                >
-                    <Send />
-                </IconButton>
+                <Tooltip title="Post Comment">
+                    <IconButton
+                        type="submit"
+                        color="primary"
+                        disabled={isPending}
+                    >
+                        <Send />
+                    </IconButton>
+                </Tooltip>
             </Box>
             {message && (
                 <Box className="mt-2 text-red-500 text-sm">

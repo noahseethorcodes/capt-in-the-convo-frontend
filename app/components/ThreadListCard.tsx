@@ -16,11 +16,9 @@ interface ThreadListCardProps {
 
 export default function ThreadListCard({ title, content, author, createdAt, commentsCount, tags, onClick }: ThreadListCardProps) {
     return (
-        <Card className="shadow-md mb-6 mx-auto w-full max-w-lg rounded-lg transition-transformation duration-300 ease-in-out hover:cursor-pointer hover:shadow-lg hover:scale-105"
+        <Card className="w-full max-w-[600px] shadow-md mb-6 mx-auto w-full max-w-lg rounded-lg transition-transformation duration-300 ease-in-out hover:cursor-pointer hover:shadow-lg hover:scale-105"
             variant="outlined"
             sx={{
-                width: "100%",
-                maxWidth: 600,
                 borderRadius: "10px",
             }}
             onClick={onClick}>
@@ -35,14 +33,7 @@ export default function ThreadListCard({ title, content, author, createdAt, comm
                     {content.substring(0, 100)}... {/* Limit content to 100 characters */}
                 </Typography>
                 {/* Comment Count */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        mt: 2,
-                    }}
-                >
+                <Box className="flex justify-end items-center mt-2">
                     <CommentTwoToneIcon fontSize="small" sx={{ mr: 0.5 }} />
                     <Typography variant="caption" color="textSecondary">
                         {commentsCount} {commentsCount === "1" ? "comment" : "comments"}

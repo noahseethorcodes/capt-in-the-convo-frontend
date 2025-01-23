@@ -8,22 +8,15 @@ interface TagBoxesProps {
 export default function TagBoxes({ tags }: TagBoxesProps) {
     if (tags) {
         return (
-            <Box
-                sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 1,
-                    mb: 0.5,
-                }}
-            >
+            <Box className="flex flex-wrap gap-1 my-2">
                 {tags.map((tag) => (
                     <Chip
                         key={tag.ID}
                         label={tag.Name}
                         size="small"
                         sx={{
-                            backgroundColor: "#e0f7fa",
-                            color: "#006064",
+                            backgroundColor: "secondary.light",
+                            color: "secondary.contrast",
                             fontWeight: "bold",
                             borderRadius: "4px",
                         }}

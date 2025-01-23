@@ -1,4 +1,4 @@
-import { Box, Typography, List, IconButton } from "@mui/material";
+import { Box, Typography, List, IconButton, Tooltip } from "@mui/material";
 import { Comment } from "../lib/definitions";
 import { deleteCommentByID } from "../lib/data";
 import { Delete } from "@mui/icons-material";
@@ -18,10 +18,10 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
         if (confirm("Are you sure you want to delete this comment?")) {
             const response = await deleteCommentByID(threadID, commentID);
             if (response === "Success") {
-                toast.success("Comment successfully deleted");
+                toast.success("Comment Deleted");
                 router.push(`/convos/${threadID}`);
             } else {
-                toast.error("Couldn't delete this comment");
+                toast.error("Couldn't Delete Comment");
             }
 
         }
@@ -32,7 +32,7 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
             <Typography
                 variant="body2"
                 color="textSecondary"
-                sx={{ textAlign: "center", my: 4 }}
+                className="text-center my-4"
             >
                 There are no comments yet.
             </Typography>
@@ -45,18 +45,13 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
             {comments.map((comment) => (
                 <Box
                     key={comment.ID}
-                    sx={{
-                        backgroundColor: "#f5f5f5",
-                        padding: "12px",
-                        borderRadius: "8px",
-                        marginBottom: "12px",
-                    }}
+                    className="bg-[#f5f5f5] p-3 rounded-lg mb-3"
                 >
                     <Typography variant="body2" className="mb-1">
                         {comment.Content}
                     </Typography>
                     <Typography variant="caption" color="textSecondary">
-                        By {comment.Username} on{" "}
+                        Comment by <span className="font-semibold">{comment.Username}</span> on{" "}
                         {new Date(comment.CreatedAt).toLocaleString(undefined, {
                             dateStyle: "medium",
                             timeStyle: "short",
@@ -64,13 +59,18 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
                     </Typography>
                     {/* Delete Button (Visible to Owner Only) */}
                     {isCommenter(comment.UserID) && (
-                        <IconButton
-                            aria-label="Delete comment"
-                            color="error"
-                            onClick={() => handleDelete(comment.ThreadID, comment.ID)}
-                        >
-                            <Delete />
-                        </IconButton>
+                        <Box className="flex justify-end">
+                            <Tooltip title="Delete Comment">
+                                <IconButton
+                                    aria-label="Delete comment"
+                                    color="primary"
+                                    onClick={() => handleDelete(comment.ThreadID, comment.ID)}
+                                    size="small"
+                                >
+                                    <Delete />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
                     )}
                 </Box>
             ))}
