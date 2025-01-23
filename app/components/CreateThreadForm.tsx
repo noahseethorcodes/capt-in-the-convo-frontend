@@ -38,7 +38,7 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
         <Box
             component="form"
             action={action}
-            sx={{ my: "2", width: "100%", }}
+            className="w-full"
         >
             <Typography variant="h4" className="text-center mb-4 py-4">
                 Create a Convo!

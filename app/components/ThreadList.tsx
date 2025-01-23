@@ -21,7 +21,7 @@ export default function ThreadList({ threads }: ThreadListProps) {
             <Typography
                 variant="body2"
                 color="textSecondary"
-                sx={{ textAlign: "center", my: 4 }}
+                className="text-center my-4"
             >
                 No threads found!
             </Typography>

@@ -32,7 +32,7 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
             <Typography
                 variant="body2"
                 color="textSecondary"
-                sx={{ textAlign: "center", my: 4 }}
+                className="text-center my-4"
             >
                 There are no comments yet.
             </Typography>
@@ -45,12 +45,7 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
             {comments.map((comment) => (
                 <Box
                     key={comment.ID}
-                    sx={{
-                        backgroundColor: "#f5f5f5",
-                        padding: "12px",
-                        borderRadius: "8px",
-                        marginBottom: "12px",
-                    }}
+                    className="bg-[#f5f5f5] p-3 rounded-lg mb-3"
                 >
                     <Typography variant="body2" className="mb-1">
                         {comment.Content}

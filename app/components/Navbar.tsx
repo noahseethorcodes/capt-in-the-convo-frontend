@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { AppBar, Toolbar, Typography, Box, Button, Divider } from "@mui/material";
+import { Toolbar, Box, Button, Divider } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import clsx from "clsx";
 
 const links = [
     { href: "/convos", label: "All Convos" },

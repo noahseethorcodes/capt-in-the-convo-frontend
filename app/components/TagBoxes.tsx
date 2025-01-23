@@ -8,14 +8,7 @@ interface TagBoxesProps {
 export default function TagBoxes({ tags }: TagBoxesProps) {
     if (tags) {
         return (
-            <Box
-                sx={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 1,
-                    mb: 0.5,
-                }}
-            >
+            <Box className="flex flex-wrap gap-1 my-2">
                 {tags.map((tag) => (
                     <Chip
                         key={tag.ID}

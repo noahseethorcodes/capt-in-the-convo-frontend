@@ -24,10 +24,10 @@ export default function AddCommentForm({ threadID }: { threadID: string }) {
         <Box
             component="form"
             action={action}
-            sx={{ my: 2 }}
+            className="my-2"
 
         >
-            <Box sx={{ display: "flex", alignItems: "center", my: 2 }}>
+            <Box className="flex items-center my-2">
 
 
                 <input type="hidden" name="threadID" value={threadID} />
@@ -38,7 +38,7 @@ export default function AddCommentForm({ threadID }: { threadID: string }) {
                     multiline
                     fullWidth
                     disabled={isPending}
-                    sx={{ mr: 1 }}
+                    className="mr-1"
                 />
                 <Tooltip title="Post Comment">
                     <IconButton

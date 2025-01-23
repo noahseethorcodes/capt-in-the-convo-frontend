@@ -29,16 +29,7 @@ export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) 
     };
 
     return (
-        <Box
-            sx={{
-                backgroundColor: "#f5f5f5",
-                borderRadius: "8px",
-                padding: "24px",
-                maxWidth: "800px",
-                outline: "none",
-            }}
-
-        >
+        <Box className="bg-[#f5f5f5] rounded-lg p-6 max-w-[800px] outline-none">
             <Typography variant="h5" className="font-bold mb-2">
                 {thread.Title}
             </Typography>
