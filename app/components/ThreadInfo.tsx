@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, IconButton, Tooltip } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Thread } from "../lib/definitions";
 import TagBoxes from "./TagBoxes";
@@ -59,14 +59,21 @@ export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) 
             </Typography>
 
             {/* Delete Button */}
-            {isOwner && (
-                <Button
-                    variant="contained"
-                    color="error"
-                    onClick={handleDelete}
-                    className="mt-2"
-                ><Delete /></Button>
-            )}
+
+            {isOwner &&
+                <Box className="flex justify-end">
+                    <Tooltip title="Delete Thread">
+                        <IconButton
+                            aria-label="Delete convo"
+                            color="primary"
+                            onClick={handleDelete}
+                            size="small"
+                        >
+                            <Delete />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            }
         </Box>
     )
 }

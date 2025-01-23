@@ -1,4 +1,4 @@
-import { Box, Typography, List, IconButton } from "@mui/material";
+import { Box, Typography, List, IconButton, Tooltip } from "@mui/material";
 import { Comment } from "../lib/definitions";
 import { deleteCommentByID } from "../lib/data";
 import { Delete } from "@mui/icons-material";
@@ -56,7 +56,7 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
                         {comment.Content}
                     </Typography>
                     <Typography variant="caption" color="textSecondary">
-                        By {comment.Username} on{" "}
+                        Comment by <span className="font-semibold">{comment.Username}</span> on{" "}
                         {new Date(comment.CreatedAt).toLocaleString(undefined, {
                             dateStyle: "medium",
                             timeStyle: "short",
@@ -64,13 +64,18 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
                     </Typography>
                     {/* Delete Button (Visible to Owner Only) */}
                     {isCommenter(comment.UserID) && (
-                        <IconButton
-                            aria-label="Delete comment"
-                            color="error"
-                            onClick={() => handleDelete(comment.ThreadID, comment.ID)}
-                        >
-                            <Delete />
-                        </IconButton>
+                        <Box className="flex justify-end">
+                            <Tooltip title="Delete Comment">
+                                <IconButton
+                                    aria-label="Delete comment"
+                                    color="primary"
+                                    onClick={() => handleDelete(comment.ThreadID, comment.ID)}
+                                    size="small"
+                                >
+                                    <Delete />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
                     )}
                 </Box>
             ))}
