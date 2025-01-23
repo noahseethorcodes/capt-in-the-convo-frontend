@@ -1,12 +1,15 @@
-export type LoginFormState = {
-    status?: string | null;
-    message?: string | null;
+export type CreateConvoFormState = {
+    message: string,
+    data: {
+        title: string,
+        content: string,
+    }
 }
 
-export type CreateConvoFormState = {
-    message: String,
+export type AuthFormState = {
+    message: string,
     data: {
-        title: String,
-        content: String,
+        username: string,
+        password: string,
     }
 }

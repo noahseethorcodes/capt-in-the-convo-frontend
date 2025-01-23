@@ -1,16 +1,37 @@
 'use client';
 
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardContent, Typography, TextField, Button, Box } from "@mui/material";
 import { useActionState } from "react";
 import { register } from "../auth/register";
 import { Login } from "@mui/icons-material";
 import Link from "next/link";
+import { AuthFormState } from "../lib/form-validation";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 
 export default function RegistrationForm() {
-    const [formData, setFormData] = useState({ username: "", password: "" });
-    const [message, formAction, isPending] = useActionState(register, "");
+    const initalState = {
+        message: "",
+        data: {
+            username: "",
+            password: "",
+        }
+    }
+    const router = useRouter();
+    async function handleSubmit(prevState: AuthFormState, formData: FormData) {
+        const state = await register(prevState, formData);
+        if (state.message === 'Success') {
+            toast.success('Registered! Please log in')
+            router.push(`/convos`);
+            return state;
+        } else {
+            toast.error(`Registration Unsuccessful`)
+            return state;
+        }
+    }
+    const [state, formAction, isPending] = useActionState(handleSubmit, initalState);
 
     return (
         <Card className="shadow-lg w-full max-w-md" sx={{ borderRadius: "12px" }}>
@@ -25,13 +46,7 @@ export default function RegistrationForm() {
                         name="username"
                         label="Username"
                         variant="outlined"
-                        value={formData.username}
-                        onChange={(e) =>
-                            setFormData((prevState) => ({
-                                ...prevState,
-                                username: e.target.value,
-                            }))
-                        }
+                        defaultValue={state.data.username}
                         fullWidth
                     />
 
@@ -42,13 +57,7 @@ export default function RegistrationForm() {
                         label="Password"
                         type="password"
                         variant="outlined"
-                        value={formData.password}
-                        onChange={(e) =>
-                            setFormData((prevState) => ({
-                                ...prevState,
-                                password: e.target.value,
-                            }))
-                        }
+                        defaultValue={state.data.password}
                         fullWidth
                     />
 
@@ -64,14 +73,14 @@ export default function RegistrationForm() {
                         {isPending ? "Registering..." : "Register"}
                     </Button>
 
-                    {/* Error/Success Message */}
-                    {message && (
+                    {/* Error Message */}
+                    {state.message && (
                         <Typography
-                            color={message.includes("successful") ? "success" : "error"}
+                            color={state.message === "Success" ? "success" : "error"}
                             variant="body2"
                             className="text-center mt-2"
                         >
-                            {message}
+                            {state.message}
                         </Typography>
                     )}
                 </form>

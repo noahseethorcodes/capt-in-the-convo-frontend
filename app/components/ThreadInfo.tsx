@@ -3,6 +3,8 @@ import { Delete } from "@mui/icons-material";
 import { Thread } from "../lib/definitions";
 import TagBoxes from "./TagBoxes";
 import { deleteThreadByID } from "@/app/lib/data";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface ThreadInfoProps {
     thread: Thread
@@ -12,14 +14,16 @@ interface ThreadInfoProps {
 export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) {
     // Check if the logged-in user owns the thread
     const isOwner = loggedInUserID === thread.UserID;
+    const router = useRouter();
 
     async function handleDelete() {
-        if (confirm("Are you sure you want to delete this thread?")) {
-            try {
-                await deleteThreadByID(thread.ID);
-                alert("Thread deleted successfully!");
-            } catch (error) {
-                console.error("Failed to delete thread:", error);
+        if (confirm("Are you sure you want to delete this convo?")) {
+            const response = await deleteThreadByID(thread.ID);
+            if (response === "Success") {
+                toast.success("Convo successfully deleted");
+                router.push('/convos');
+            } else {
+                toast.error("Couldn't delete this convo");
             }
         }
     };
