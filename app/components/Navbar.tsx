@@ -23,15 +23,9 @@ export default function Navbar() {
                             key={link.href}
                             component={Link}
                             href={link.href}
-                            sx={{ color: "black" }}
+                            sx={{ color: pathname === link.href ? 'primary.light' : "black" }}
                         >
-                            <p className={clsx(
-                                {
-                                    'underline text-blue-500': pathname === link.href,
-                                },
-                            )}>
-                                {link.label}
-                            </p>
+                            {link.label}
                         </Button>
                     ))}
                 </Box>

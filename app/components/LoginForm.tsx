@@ -75,7 +75,7 @@ export default function LoginForm() {
                     <Button
                         type="submit"
                         variant="contained"
-                        color="primary"
+                        color="secondary"
                         disabled={isPending}
                         fullWidth
                         className="mt-2"

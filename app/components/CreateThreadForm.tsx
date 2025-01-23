@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useActionState, useState } from "react";
 import { postThread } from "../lib/data"; // Assume postThread is your server action
@@ -97,18 +97,17 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
             )}
 
             {/* Submit Button */}
-            <Box className="flex justify-end items-center">
-                <button
+            <Box className="flex justify-end">
+                <Button
                     type="submit"
+                    variant="contained"
+                    color="primary"
                     disabled={isPending}
-                    className="bg-blue-500 hover:bg-blue-425 text-white font-bold py-2 px-4 rounded inline-flex items-center transition-transform transition-colors hover:scale-110 hover:brightness-110 transform-origin-top"
                 >
                     POST
-                    <Send className="ml-3" />
-                </button>
+                    <Send className="ml-2" />
+                </Button>
             </Box>
-
-
         </Box>
     );
 }

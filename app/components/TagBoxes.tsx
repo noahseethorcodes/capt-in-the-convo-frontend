@@ -22,8 +22,8 @@ export default function TagBoxes({ tags }: TagBoxesProps) {
                         label={tag.Name}
                         size="small"
                         sx={{
-                            backgroundColor: "#e0f7fa",
-                            color: "#006064",
+                            backgroundColor: "secondary.light",
+                            color: "secondary.contrast",
                             fontWeight: "bold",
                             borderRadius: "4px",
                         }}
