@@ -52,7 +52,7 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
                     </Typography>
                     <Typography variant="caption" color="textSecondary">
                         Comment by <span className="font-semibold">{comment.Username}</span> on{" "}
-                        {new Date(comment.CreatedAt).toLocaleString(undefined, {
+                        {new Date(comment.CreatedAt).toLocaleString("en-US", {
                             dateStyle: "medium",
                             timeStyle: "short",
                         })}

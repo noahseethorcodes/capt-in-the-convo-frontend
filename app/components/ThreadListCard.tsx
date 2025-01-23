@@ -45,7 +45,6 @@ export default function ThreadListCard({ title, content, author, createdAt, comm
                         Posted by {author} on {new Date(createdAt).toLocaleString("en-US", {
                             dateStyle: "medium",
                             timeStyle: "short",
-                            timeZone: "UTC",
                         })}
                     </Typography>
                 </Box>
