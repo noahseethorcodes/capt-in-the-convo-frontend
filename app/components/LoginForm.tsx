@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { PersonAdd } from "@mui/icons-material";
+import { Login, PersonAdd } from "@mui/icons-material";
 
 async function handleLoginFormSubmit(
     prevState: string,
@@ -30,6 +30,7 @@ async function handleLoginFormSubmit(
         toast.success("Logged In!")
         redirect("/convos");
     }
+    toast.error("Login Failed")
     if (signInResponse?.error) {
         console.log(signInResponse.error);
         return signInResponse.error;
@@ -72,16 +73,7 @@ export default function LoginForm() {
                         }))}
                         fullWidth
                     />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="secondary"
-                        disabled={isPending}
-                        fullWidth
-                        className="mt-2"
-                    >
-                        {isPending ? "Verifying..." : "Login"}
-                    </Button>
+
                     {state && (
                         <Typography
                             color="error"
@@ -91,37 +83,40 @@ export default function LoginForm() {
                             {state}
                         </Typography>
                     )}
+
+                    <Box className="flex items-center justify-center mt-2">
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            disabled={isPending}
+                            className="mt-2 w-2/5"
+                        >
+                            {isPending ? "Verifying..." : "Login"}
+                            <Login className="ml-2" />
+                        </Button>
+
+                    </Box>
                 </form>
-                <Box className="flex items-center justify-center mt-4">
+
+                <Box className="flex items-center justify-center mt-2">
                     <Typography color="textSecondary">or</Typography>
                 </Box>
 
-                {/* Sign Up Button */}
+                {/* Register Button */}
                 <Box className="flex items-center justify-center mt-2">
                     <Button
                         component={Link}
                         href="/register"
-                        variant="outlined"
-                        sx={{
-                            width: "33%",
-                            display: "flex",
-                            justifyContent: "space-around",
-                            alignItems: "center",
-                            px: 2,
-                            py: 1,
-                            color: "black",
-                            borderRadius: "4px",
-                            "&:hover": {
-                                backgroundColor: "green",
-                                color: "white",
-                            },
-                        }}
+                        variant="contained"
+                        color="secondary"
+                        className="w-1/3"
                     >
                         Register
-                        <PersonAdd />
+                        <PersonAdd className="ml-2" />
                     </Button>
                 </Box>
             </CardContent>
-        </Card>
+        </Card >
     );
 };

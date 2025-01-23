@@ -1,10 +1,12 @@
 import React from "react";
 import LoginForm from "@/app/components/LoginForm";
+import { Box } from "@mui/material";
 
 export default function LoginPage() {
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <Box className="flex items-center justify-center">
             <LoginForm />
-        </div>
+        </Box>
+
     )
 }

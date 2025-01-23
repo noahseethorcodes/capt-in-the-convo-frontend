@@ -4,7 +4,7 @@ import React from "react";
 import { Card, CardContent, Typography, TextField, Button, Box } from "@mui/material";
 import { useActionState } from "react";
 import { register } from "../auth/register";
-import { Login } from "@mui/icons-material";
+import { Login, PersonAdd } from "@mui/icons-material";
 import Link from "next/link";
 import { AuthFormState } from "../lib/form-validation";
 import { useRouter } from "next/navigation";
@@ -23,7 +23,7 @@ export default function RegistrationForm() {
     async function handleSubmit(prevState: AuthFormState, formData: FormData) {
         const state = await register(prevState, formData);
         if (state.message === 'Success') {
-            toast.success('Registered! Please log in')
+            toast.success('Registered! Please Log In')
             router.push(`/convos`);
             return state;
         } else {
@@ -61,18 +61,6 @@ export default function RegistrationForm() {
                         fullWidth
                     />
 
-                    {/* Submit Button */}
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        disabled={isPending}
-                        className="mt-2"
-                    >
-                        {isPending ? "Registering..." : "Register"}
-                    </Button>
-
                     {/* Error Message */}
                     {state.message && (
                         <Typography
@@ -83,8 +71,24 @@ export default function RegistrationForm() {
                             {state.message}
                         </Typography>
                     )}
+
+                    {/* Submit Button */}
+                    <Box className="flex items-center justify-center mt-2">
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            disabled={isPending}
+                            className="mt-2 w-2/5"
+                        >
+                            {isPending ? "Registering..." : "Register"}
+                            <PersonAdd className="ml-2" />
+                        </Button>
+
+                    </Box>
                 </form>
-                <Box className="flex items-center justify-center mt-4">
+
+                <Box className="flex items-center justify-center mt-2">
                     <Typography color="textSecondary">or</Typography>
                 </Box>
 
@@ -93,24 +97,12 @@ export default function RegistrationForm() {
                     <Button
                         component={Link}
                         href="/login"
-                        variant="outlined"
-                        sx={{
-                            width: "33%",
-                            display: "flex",
-                            justifyContent: "space-around",
-                            alignItems: "center",
-                            px: 2,
-                            py: 1,
-                            color: "black",
-                            borderRadius: "4px",
-                            "&:hover": {
-                                backgroundColor: "green",
-                                color: "white",
-                            },
-                        }}
+                        variant="contained"
+                        color="secondary"
+                        className="w-1/3"
                     >
                         Login
-                        <Login />
+                        <Login className="ml-2" />
                     </Button>
                 </Box>
             </CardContent>

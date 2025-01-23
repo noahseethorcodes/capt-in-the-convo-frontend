@@ -20,10 +20,10 @@ export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) 
         if (confirm("Are you sure you want to delete this convo?")) {
             const response = await deleteThreadByID(thread.ID);
             if (response === "Success") {
-                toast.success("Convo successfully deleted");
+                toast.success("Convo Deleted");
                 router.push('/convos');
             } else {
-                toast.error("Couldn't delete this convo");
+                toast.error("Couldn't Delete Convo");
             }
         }
     };
