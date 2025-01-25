@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useActionState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
     Button,
     TextField,
@@ -18,6 +18,7 @@ import { Login, PersonAdd } from "@mui/icons-material";
 
 export default function LoginForm() {
     const router = useRouter();
+    const callbackUrl = useSearchParams().get('callbackUrl');
     async function handleLoginFormSubmit(
         prevState: string,
         formData: FormData
@@ -26,13 +27,11 @@ export default function LoginForm() {
             redirect: false,
             username: formData.get("username"),
             password: formData.get("password"),
-            callbackUrl: "/"
         });
 
         if (signInResponse?.ok) {
-            // Dirty fix for strange production error
-            globalThis.window.location.href = '/convos';
-            return '';
+            toast.success("Logged In!");
+            return 'Success';
         }
 
         if (signInResponse?.error) {
@@ -46,6 +45,17 @@ export default function LoginForm() {
 
     const [formData, setFormData] = useState({ username: "", password: "" })
     const [state, formAction, isPending] = useActionState(handleLoginFormSubmit, "");
+
+    useEffect(() => {
+        if (state === 'Success') {
+            if (callbackUrl) {
+                router.push(callbackUrl);
+            } else {
+                router.push('/courses');
+            }
+        }
+    }, [state]);
+
     return (
         <Card className="shadow-lg w-full max-w-md" sx={{ borderRadius: "12px", }}>
             <CardContent>
@@ -81,7 +91,7 @@ export default function LoginForm() {
 
                     {state && (
                         <Typography
-                            color="error"
+                            color={state === 'Success' ? 'success' : "error"}
                             variant="body2"
                             className="text-center mt-2"
                         >
