@@ -1,14 +1,17 @@
 'use client';
 
-import { Box, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useActionState, useState } from "react";
 import { postThread } from "../lib/data"; // Assume postThread is your server action
 import { CreateConvoFormState } from "../lib/form-validation";
 import { Tag } from "../lib/definitions";
+import TagBoxes from "./TagBoxes";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
-    const [selectedTags, setSelectedTags] = useState<String[]>([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const initalState = {
         message: "",
         data: {
@@ -16,13 +19,26 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
             content: "",
         }
     }
-    const [state, action, isPending] = useActionState<CreateConvoFormState, FormData>(postThread, initalState);
+    const router = useRouter();
+
+    async function handleSubmit(prevState: CreateConvoFormState, formData: FormData) {
+        const state = await postThread(prevState, formData);
+        if (state.message === 'Success') {
+            toast.success('Convo Posted!')
+            router.push(`/convos`);
+            return state;
+        } else {
+            return state;
+        }
+    }
+
+    const [state, action, isPending] = useActionState<CreateConvoFormState, FormData>(handleSubmit, initalState);
 
     return (
         <Box
             component="form"
             action={action}
-            sx={{ my: "2", width: "50%", }}
+            className="w-full"
         >
             <Typography variant="h4" className="text-center mb-4 py-4">
                 Create a Convo!
@@ -40,12 +56,16 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
             />
 
             {/* Tag Selection Field */}
-            <InputLabel>Tags (can select multiple)</InputLabel>
+            <InputLabel>Select Tags:</InputLabel>
+            {selectedTags.length > 0 &&
+                <Box>
+                    <TagBoxes tags={tags.filter((tag) => selectedTags.includes(tag.Name))} />
+                </Box>
+            }
             <Select
                 multiple
                 value={selectedTags}
-                onChange={(e) => setSelectedTags(e.target.value as String[])}
-                input={<OutlinedInput label="Tags" placeholder="Choose Tags!" />}
+                onChange={(e) => setSelectedTags(e.target.value as string[])}
                 name="tags"
                 fullWidth
             >
@@ -77,18 +97,17 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
             )}
 
             {/* Submit Button */}
-            <Box className="flex justify-end items-center">
-                <button
+            <Box className="flex justify-end">
+                <Button
                     type="submit"
+                    variant="contained"
+                    color="primary"
                     disabled={isPending}
-                    className="bg-blue-500 hover:bg-blue-425 text-white font-bold py-2 px-4 rounded inline-flex items-center transition-transform transition-colors hover:scale-110 hover:brightness-110 transform-origin-top"
                 >
                     POST
-                    <Send className="ml-3" />
-                </button>
+                    <Send className="ml-2" />
+                </Button>
             </Box>
-
-
         </Box>
     );
 }

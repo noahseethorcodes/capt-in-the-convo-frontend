@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { AppBar, Toolbar, Typography, Box, Button, Divider } from "@mui/material";
+import { Toolbar, Box, Button, Divider } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import clsx from "clsx";
 
 const links = [
     { href: "/convos", label: "All Convos" },
@@ -15,11 +14,7 @@ export default function Navbar() {
     const pathname = usePathname(); // Get the current route
 
     return (
-        <Box position="static" color="default" sx={{
-            width: "100%",
-            maxWidth: 600,
-            borderRadius: "10px",
-        }}>
+        <Box position="static" color="default">
             <Toolbar>
                 <Box>
                     {links.map((link) => (
@@ -27,15 +22,9 @@ export default function Navbar() {
                             key={link.href}
                             component={Link}
                             href={link.href}
-                            sx={{ color: "black" }}
+                            sx={{ color: pathname === link.href ? 'primary.light' : "black" }}
                         >
-                            <p className={clsx(
-                                {
-                                    'underline text-blue-500': pathname === link.href,
-                                },
-                            )}>
-                                {link.label}
-                            </p>
+                            {link.label}
                         </Button>
                     ))}
                 </Box>

@@ -1,89 +1,78 @@
 'use client';
 
-import React, { useState } from "react";
+import React from "react";
+import { Card, CardContent, Typography, TextField, Button, Box } from "@mui/material";
 import { useActionState } from "react";
-import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
-import {
-    Button,
-    TextField,
-    Typography,
-    Card,
-    CardContent,
-    Box,
-} from "@mui/material";
-import toast from "react-hot-toast";
-import Link from "next/link";
+import { register } from "../auth/register";
 import { Login, PersonAdd } from "@mui/icons-material";
+import Link from "next/link";
+import { AuthFormState } from "../lib/form-validation";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
-async function handleLoginFormSubmit(
-    prevState: string,
-    formData: FormData
-) {
-    const signInResponse = await signIn("credentials", {
-        redirect: false,
-        username: formData.get("username"),
-        password: formData.get("password"),
-        callbackUrl: "/"
-    });
-    if (signInResponse?.ok) {
-        toast.success("Logged In!")
-        redirect("/convos");
-    }
-    toast.error("Login Failed")
-    if (signInResponse?.error) {
-        console.log(signInResponse.error);
-        return signInResponse.error;
-    }
-    return "Sign In Failed";
-}
 
-export default function LoginForm() {
-    const [formData, setFormData] = useState({ username: "", password: "" })
-    const [state, formAction, isPending] = useActionState(handleLoginFormSubmit, "");
+export default function RegistrationForm() {
+    const initalState = {
+        message: "",
+        data: {
+            username: "",
+            password: "",
+        }
+    }
+    const router = useRouter();
+    async function handleSubmit(prevState: AuthFormState, formData: FormData) {
+        const state = await register(prevState, formData);
+        if (state.message === 'Success') {
+            toast.success('Registered! Please Log In')
+            router.push(`/convos`);
+            return state;
+        } else {
+            toast.error(`Registration Unsuccessful`)
+            return state;
+        }
+    }
+    const [state, formAction, isPending] = useActionState(handleSubmit, initalState);
+
     return (
-        <Card className="shadow-lg w-full max-w-md" sx={{ borderRadius: "12px", }}>
+        <Card className="shadow-lg w-full max-w-md" sx={{ borderRadius: "12px" }}>
             <CardContent>
                 <Typography variant="h5" className="text-center mb-4 py-4">
-                    Login
+                    Register
                 </Typography>
                 <form action={formAction} className="space-y-4">
+                    {/* Username Field */}
                     <TextField
                         id="username"
                         name="username"
                         label="Username"
                         variant="outlined"
-                        value={formData.username}
-                        onChange={(e) => setFormData(prevState => ({
-                            ...prevState,
-                            username: e.target.value,
-                        }))}
+                        defaultValue={state.data.username}
                         fullWidth
                     />
+
+                    {/* Password Field */}
                     <TextField
                         id="password"
                         name="password"
                         label="Password"
                         type="password"
                         variant="outlined"
-                        value={formData.password}
-                        onChange={(e) => setFormData(prevState => ({
-                            ...prevState,
-                            password: e.target.value,
-                        }))}
+                        defaultValue={state.data.password}
                         fullWidth
                     />
 
-                    {state && (
+                    {/* Error Message */}
+                    {state.message && (
                         <Typography
-                            color="error"
+                            color={state.message === "Success" ? "success" : "error"}
                             variant="body2"
                             className="text-center mt-2"
                         >
-                            {state}
+                            {state.message}
                         </Typography>
                     )}
 
+                    {/* Submit Button */}
                     <Box className="flex items-center justify-center mt-2">
                         <Button
                             type="submit"
@@ -92,8 +81,8 @@ export default function LoginForm() {
                             disabled={isPending}
                             className="mt-2 w-2/5"
                         >
-                            {isPending ? "Verifying..." : "Login"}
-                            <Login className="ml-2" />
+                            {isPending ? "Registering..." : "Register"}
+                            <PersonAdd className="ml-2" />
                         </Button>
 
                     </Box>
@@ -103,20 +92,20 @@ export default function LoginForm() {
                     <Typography color="textSecondary">or</Typography>
                 </Box>
 
-                {/* Register Button */}
+                {/* Sign Up Button */}
                 <Box className="flex items-center justify-center mt-2">
                     <Button
                         component={Link}
-                        href="/register"
+                        href="/login"
                         variant="contained"
                         color="secondary"
                         className="w-1/3"
                     >
-                        Register
-                        <PersonAdd className="ml-2" />
+                        Login
+                        <Login className="ml-2" />
                     </Button>
                 </Box>
             </CardContent>
-        </Card >
+        </Card>
     );
-};
+}

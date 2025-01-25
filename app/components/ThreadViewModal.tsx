@@ -7,77 +7,38 @@ import { Thread, Comment } from "@/app/lib/definitions";
 import TagBoxes from "./TagBoxes";
 import AddCommentForm from "./AddCommentForm";
 import { useRouter } from "next/navigation";
+import ThreadInfo from "./ThreadInfo";
 
 interface ThreadViewModalProps {
     thread: Thread
     comments: Comment[]
+    loggedInUserID: string
 }
 
-const ThreadViewModal: React.FC<ThreadViewModalProps> = ({ thread, comments }) => {
+export default function ThreadViewModal({ thread, comments, loggedInUserID }: ThreadViewModalProps) {
     const router = useRouter();
     function onModalClose() {
         router.push(`/convos`); // Navigate back to the thread modal
     }
 
     return (
-        <Modal open={true} onClose={onModalClose} >
-            <Box
-                sx={{
-                    backgroundColor: "white",
-                    borderRadius: "8px",
-                    padding: "24px",
-                    maxWidth: "800px",
-                    maxHeight: "90%",
-                    margin: "40px auto",
-                    outline: "none",
-                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.2)",
-                }}
-
-                className="mb-4 overflow-y-auto"
-            >
+        <Modal open={true} onClose={onModalClose} className="px-4">
+            <Box className="mb-4 overflow-y-auto bg-white rounded-lg p-6 max-w-[800px] 
+                            max-h-[90%] mx-auto my-[40px] 
+                            outline-none shadow-[0px_4px_20px_rgba(0,0,0,0.2)]">
                 {/* Thread Information */}
-                <Box
-                    sx={{
-                        backgroundColor: "#f5f5f5",
-                        borderRadius: "8px",
-                        padding: "24px",
-                        maxWidth: "800px",
-                        outline: "none",
-                    }}
-
-                >
-                    <Typography variant="h5" className="font-bold mb-2">
-                        {thread.Title}
-                    </Typography>
-                    <TagBoxes tags={thread.Tags} />
-                    <Typography variant="body1">
-                        {thread.Content}
-                    </Typography>
-                    <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        className="text-right block py-2"
-                    >
-                        Posted by <span className="font-semibold">{thread.Username}</span> on{" "}
-                        {new Date(thread.CreatedAt).toLocaleString(undefined, {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                        })}
-                    </Typography>
-                </Box>
+                <ThreadInfo thread={thread} loggedInUserID={loggedInUserID} />
 
                 {/* Comments Section */}
-                <Box sx={{ marginTop: "24px" }}>
+                <Box className="mt-6">
                     <Typography variant="h6" className="mb-2">
                         Comments
                     </Typography>
                     <Divider />
                     <AddCommentForm threadID={thread.ID} />
-                    <CommentList comments={comments} />
+                    <CommentList comments={comments} loggedInUserID={loggedInUserID} />
                 </Box>
             </Box>
         </Modal>
     );
 };
-
-export default ThreadViewModal;

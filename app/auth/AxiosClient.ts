@@ -1,3 +1,4 @@
+'use server'
 
 import axios from "axios";
 import { getServerSession } from "next-auth/next"
@@ -5,7 +6,7 @@ import { getRefreshToken, updateSessionTokens } from "./TokenHandling";
 import { authConfig } from "./auth";
 
 const BackendAPIClient = axios.create({
-    baseURL: "http://localhost:8080", // Update to match your backend
+    baseURL: process.env.BACKEND_URL, // Update to match your backend
 });
 
 BackendAPIClient.interceptors.request.use(async (config) => {
@@ -30,7 +31,7 @@ BackendAPIClient.interceptors.response.use(
             if (error.response.status === 401 && error.config) {
                 try {
                     // Refresh the token
-                    const refreshResponse = await axios.post("http://localhost:8080/auth/refresh", {
+                    const refreshResponse = await axios.post(`${process.env.BACKEND_URL}/auth/refresh`, {
                         refreshToken: await getRefreshToken(),
                     });
 
@@ -39,12 +40,10 @@ BackendAPIClient.interceptors.response.use(
 
                     // Update session with new tokens
                     await updateSessionTokens(accessToken, refreshToken);
-                    console.log("New Access Token:", accessToken);
 
                     // Clone the original config object
                     const originalRequest = { ...error.config };
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                    console.log("Original Request Headers:", originalRequest.headers);
 
                     // Retry the original request with the new access token
                     return axios.request(originalRequest);

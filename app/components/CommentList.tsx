@@ -1,17 +1,38 @@
-import { Box, Typography, List } from "@mui/material";
+import { Box, Typography, List, IconButton, Tooltip } from "@mui/material";
 import { Comment } from "../lib/definitions";
+import { deleteCommentByID } from "../lib/data";
+import { Delete } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface CommentListProps {
     comments: Comment[];
+    loggedInUserID: string;
 }
 
-export default function CommentList({ comments }: CommentListProps) {
+export default function CommentList({ comments, loggedInUserID }: CommentListProps) {
+    const isCommenter = (commentUserID: string) => loggedInUserID === commentUserID;
+    const router = useRouter();
+
+    async function handleDelete(threadID: string, commentID: string) {
+        if (confirm("Are you sure you want to delete this comment?")) {
+            const response = await deleteCommentByID(threadID, commentID);
+            if (response === "Success") {
+                toast.success("Comment Deleted");
+                router.push(`/convos/${threadID}`);
+            } else {
+                toast.error("Couldn't Delete Comment");
+            }
+
+        }
+    };
+
     if (comments.length === 0) {
         return (
             <Typography
                 variant="body2"
                 color="textSecondary"
-                sx={{ textAlign: "center", my: 4 }}
+                className="text-center my-4"
             >
                 There are no comments yet.
             </Typography>
@@ -24,23 +45,33 @@ export default function CommentList({ comments }: CommentListProps) {
             {comments.map((comment) => (
                 <Box
                     key={comment.ID}
-                    sx={{
-                        backgroundColor: "#f5f5f5",
-                        padding: "12px",
-                        borderRadius: "8px",
-                        marginBottom: "12px",
-                    }}
+                    className="bg-[#f5f5f5] p-3 rounded-lg mb-3"
                 >
                     <Typography variant="body2" className="mb-1">
                         {comment.Content}
                     </Typography>
                     <Typography variant="caption" color="textSecondary">
-                        By {comment.Username} on{" "}
-                        {new Date(comment.CreatedAt).toLocaleString(undefined, {
+                        Comment by <span className="font-semibold">{comment.Username}</span> on{" "}
+                        {new Date(comment.CreatedAt).toLocaleString("en-US", {
                             dateStyle: "medium",
                             timeStyle: "short",
                         })}
                     </Typography>
+                    {/* Delete Button (Visible to Owner Only) */}
+                    {isCommenter(comment.UserID) && (
+                        <Box className="flex justify-end">
+                            <Tooltip title="Delete Comment">
+                                <IconButton
+                                    aria-label="Delete comment"
+                                    color="primary"
+                                    onClick={() => handleDelete(comment.ThreadID, comment.ID)}
+                                    size="small"
+                                >
+                                    <Delete />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    )}
                 </Box>
             ))}
         </List >

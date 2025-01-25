@@ -8,10 +8,6 @@ export default withAuth({
 
 export const config = {
     matcher: [
-        /*
-         * Match all protected routes:
-         * - Protect all pages except `/login`
-         */
-        "/((?!login).*)", // Protect all paths except /login
+        "/((?!login|register).*)", // Protect all paths except /login and /register
     ],
 };

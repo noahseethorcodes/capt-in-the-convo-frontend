@@ -6,7 +6,7 @@ export type Thread = {
     Username: string;
     CommentsCount: string;
     CreatedAt: string;
-    Tags: Tag[];
+    Tags: Tag[] | null;
 };
 
 export type Tag = {

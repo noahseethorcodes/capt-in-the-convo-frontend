@@ -7,7 +7,7 @@ const TopBanner = () => {
     return (
         <AppBar position="static">
             <Toolbar className="flex justify-between">
-                <Typography variant="h6" component="div">
+                <Typography variant="h6" component="div" color='secondary.light'>
                     <Link href={'/convos'}>CAPTInTheConvo</Link>
                 </Typography>
                 <LogoutButton />
