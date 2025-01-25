@@ -31,6 +31,7 @@ export default function LoginForm() {
 
         if (signInResponse?.ok) {
             toast.success("Logged In!")
+            router.prefetch("/convos");
             router.push("/convos");
             return '';
         }
