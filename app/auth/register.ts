@@ -18,14 +18,12 @@ export async function register(prevState: AuthFormState, formData: FormData) {
     }
 
     if (password.length < 6) {
-        console.log(password);
-        console.log(password.length);
         return { message: "Password must be at least 6 characters long", data: data };
     }
 
     let redirectPath: string | null = null
     try {
-        const response = await BackendAPIClient.post(`/auth/register`, data);
+        await BackendAPIClient.post(`/auth/register`, data);
         redirectPath = `/login`;
         return { message: "Success", data: data };
     } catch (error) {

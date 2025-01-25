@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tag } from "../lib/definitions";
-import { Box, InputLabel, Select, OutlinedInput, MenuItem, Button, TextField, Typography, Divider } from "@mui/material";
+import { Box, InputLabel, Select, MenuItem, TextField, SelectChangeEvent } from "@mui/material";
 import TagBoxes from "./TagBoxes";
 
 interface TagFilterProps {
@@ -19,13 +19,9 @@ export default function SearchAndFilter({ tags, initialSelectedTags, initialSear
     const [searchQuery, setSearchQuery] = useState<string>(initialSearch);
     const [selectedTags, setSelectedTags] = useState<string[]>(initialSelectedTags);
 
-    // useEffect(() => {
-    //     console.log(selectedTags);
-    //     console.log(tags.filter((tag) => selectedTags.includes(tag.Name)));
-    // }, [selectedTags]);
-
     function handleFilter(e: any) {
         const currentTags = e.target.value;
+        console.log(typeof (currentTags));
         setSelectedTags(currentTags);
         const params = new URLSearchParams(searchParams);
         params.delete('tag');
@@ -37,7 +33,7 @@ export default function SearchAndFilter({ tags, initialSelectedTags, initialSear
         replace(`${pathname}?${params.toString()}`);
     }
 
-    function handleSearch(e: any) {
+    function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
         const currentSearchQuery = e.target.value;
         setSearchQuery(currentSearchQuery)
         const params = new URLSearchParams(searchParams);

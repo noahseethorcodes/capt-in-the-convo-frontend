@@ -4,7 +4,6 @@ import React from "react";
 import { Modal, Box, Typography, Divider } from "@mui/material";
 import CommentList from "./CommentList";
 import { Thread, Comment } from "@/app/lib/definitions";
-import TagBoxes from "./TagBoxes";
 import AddCommentForm from "./AddCommentForm";
 import { useRouter } from "next/navigation";
 import ThreadInfo from "./ThreadInfo";

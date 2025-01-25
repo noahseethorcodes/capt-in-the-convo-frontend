@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, IconButton, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useActionState, useState } from "react";
 import { postThread } from "../lib/data"; // Assume postThread is your server action

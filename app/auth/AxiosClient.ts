@@ -16,7 +16,6 @@ BackendAPIClient.interceptors.request.use(async (config) => {
         config.headers.Authorization = `Bearer ${session.accessToken}`;
     } else {
         console.error("MISSING ACCESS TOKEN")
-        console.log(session)
     }
 
     return config;
@@ -35,7 +34,6 @@ BackendAPIClient.interceptors.response.use(
                         refreshToken: await getRefreshToken(),
                     });
 
-                    console.log(refreshResponse.data);
                     const { accessToken, refreshToken } = refreshResponse.data;
 
                     // Update session with new tokens
