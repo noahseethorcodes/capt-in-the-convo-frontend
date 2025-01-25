@@ -24,7 +24,7 @@ export default function CreateThreadForm({ tags }: { tags: Tag[] }) {
     async function handleSubmit(prevState: CreateConvoFormState, formData: FormData) {
         const state = await postThread(prevState, formData);
         if (state.message === 'Success') {
-            toast.success('Convo Posted!')
+            toast.success('Convo Posted!');
             router.push(`/convos`);
             return state;
         } else {
