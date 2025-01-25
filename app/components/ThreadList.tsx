@@ -4,7 +4,6 @@ import ThreadListCard from "./ThreadListCard";
 import { Box, Typography } from "@mui/material";
 import { Thread } from "../lib/definitions";
 import { useRouter } from "next/navigation";
-import { isNull } from "util";
 
 interface ThreadListProps {
     threads: Thread[];
