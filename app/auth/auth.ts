@@ -51,9 +51,7 @@ export const authConfig: NextAuthOptions = {
     },
     callbacks: {
         async jwt({ token, user }: { token: JWT; user?: User }) {
-            console.log("JWT Callback Triggered");
             if (user) {
-                console.log("User Object in JWT Callback:", user);
                 token.accessToken = user.accessToken; // Store JWT in token
                 token.refreshToken = user.refreshToken;
                 token.userID = user.id;
@@ -61,7 +59,6 @@ export const authConfig: NextAuthOptions = {
             return token;
         },
         async session({ session, token }: { session: Session; token: JWT }) {
-            console.log("Session Callback Triggered");
             session.accessToken = token.accessToken; // Pass tokens to session
             session.refreshToken = token.refreshToken;
             session.userID = token.userID;

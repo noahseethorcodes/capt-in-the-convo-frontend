@@ -1,20 +1,16 @@
 'use server';
 import { Comment, Tag, Thread } from "./definitions";
 import BackendAPIClient from "@/app/auth/AxiosClient";
-import { redirect } from "next/navigation";
 import { getUserID } from "@/app/auth/TokenHandling";
 import { CreateConvoFormState } from "./form-validation";
-import toast from "react-hot-toast";
 
 export async function fetchThreads(tags: string[], searchQuery: string) {
     try {
         let query = ''
-        console.log(typeof (tags))
         tags.forEach((tag: string) => query += `tag=${tag}&`)
         if (searchQuery) {
             query += `search=${searchQuery}`
         }
-        console.log(`Fetching threads via /threads${query}...`);
         const response = await BackendAPIClient.get<Thread[]>(`/threads?${query}`);
         return response.data;
     } catch (error) {
@@ -25,18 +21,15 @@ export async function fetchThreads(tags: string[], searchQuery: string) {
 
 export async function fetchThreadByID(threadID: string) {
     try {
-        console.log(`Fetching thread ${threadID}...`);
         const response = await BackendAPIClient.get<Thread>(`/threads/${threadID}`);
         return response.data;
     } catch (error) {
-        console.error('Backend Error:', error);
         throw new Error(`Failed to fetch thread ${threadID}.`);
     }
 }
 
 export async function fetchTags() {
     try {
-        console.log('Fetching tags...');
         const response = await BackendAPIClient.get<Tag[]>("/tags?is_active=true");
         return response.data;
     } catch (error) {
@@ -47,7 +40,6 @@ export async function fetchTags() {
 
 export async function fetchCommentsByThreadID(threadID: string) {
     try {
-        console.log(`Fetching comments for thread ${threadID}...`);
         const response = await BackendAPIClient.get<Comment[]>(`/comments/${threadID}`);
         return response.data;
     } catch (error) {
@@ -69,7 +61,7 @@ export async function postComment(prevState: string, formData: FormData) {
         "user_id": await getUserID(),
         "thread_id": thread_id
     }
-    console.log(data);
+
     try {
         await BackendAPIClient.post(`/comments`, data);
         return "Success";
@@ -111,7 +103,6 @@ export async function postThread(prevState: CreateConvoFormState, formData: Form
         "user_id": await getUserID(),
         "tags": tagsArray
     }
-    console.log(data);
 
     try {
         await BackendAPIClient.post(`/threads`, data);
@@ -130,8 +121,7 @@ export async function postThread(prevState: CreateConvoFormState, formData: Form
 
 export async function deleteThreadByID(threadID: string) {
     try {
-        console.log(`Deleting thread ${threadID}...`);
-        await BackendAPIClient.delete<String>(`/threads/${threadID}`);
+        await BackendAPIClient.delete<string>(`/threads/${threadID}`);
         return 'Success';
     } catch (error) {
         console.error('Backend Error:', error);
@@ -141,7 +131,6 @@ export async function deleteThreadByID(threadID: string) {
 
 export async function deleteCommentByID(threadID: string, commentID: string) {
     try {
-        console.log(`Deleting comment ${commentID}...`);
         await BackendAPIClient.delete<string>(`/comments/${commentID}`);
         return "Success";
     } catch (error) {

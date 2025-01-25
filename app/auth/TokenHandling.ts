@@ -26,7 +26,6 @@ export async function updateSessionTokens(newAccessToken: string, newRefreshToke
     if (session) {
         session.accessToken = newAccessToken; // Update the access token in session data
         session.refreshToken = newRefreshTokens; // Update the refresh token in session data
-        console.log("Tokens updated in session");
     } else {
         console.error("Failed to update session: No active session found.");
     }

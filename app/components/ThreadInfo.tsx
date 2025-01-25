@@ -1,4 +1,4 @@
-import { Box, Typography, Button, IconButton, Tooltip } from "@mui/material";
+import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Thread } from "../lib/definitions";
 import TagBoxes from "./TagBoxes";
@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 interface ThreadInfoProps {
     thread: Thread
-    loggedInUserID: String
+    loggedInUserID: string
 }
 
 export default function ThreadInfo({ thread, loggedInUserID }: ThreadInfoProps) {
