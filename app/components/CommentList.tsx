@@ -19,7 +19,7 @@ export default function CommentList({ comments, loggedInUserID }: CommentListPro
             const response = await deleteCommentByID(threadID, commentID);
             if (response === "Success") {
                 toast.success("Comment Deleted");
-                router.push(`/convos/${threadID}`);
+                router.refresh();
             } else {
                 toast.error("Couldn't Delete Comment");
             }

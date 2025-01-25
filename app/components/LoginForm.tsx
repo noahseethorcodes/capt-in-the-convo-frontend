@@ -30,14 +30,14 @@ export default function LoginForm() {
         });
 
         if (signInResponse?.ok) {
-            toast.success("Logged In!")
-            router.prefetch("/convos");
-            router.push("/convos");
+            toast.success("Logged In!");
+            router.refresh();
+            router.push('/convos');
             return '';
         }
 
         if (signInResponse?.error) {
-            toast.error("Login Failed")
+            toast.error("Login Failed");
             console.log(signInResponse.error);
             return signInResponse.error;
         } else {

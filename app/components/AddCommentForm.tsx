@@ -12,8 +12,8 @@ export default function AddCommentForm({ threadID }: { threadID: string }) {
     async function handleSubmit(prevState: string, formData: FormData) {
         const response = await postComment(prevState, formData);
         if (response === 'Success') {
-            toast.success('Comment Posted!')
-            router.push(`/convos/${threadID}`);
+            toast.success('Comment Posted!');
+            router.refresh();
             return "Comment successfully added!";
         } else {
             return response;

@@ -23,11 +23,11 @@ export default function RegistrationForm() {
     async function handleSubmit(prevState: AuthFormState, formData: FormData) {
         const state = await register(prevState, formData);
         if (state.message === 'Success') {
-            toast.success('Registered! Please Log In')
+            toast.success('Registered! Please Log In');
             router.push(`/convos`);
             return state;
         } else {
-            toast.error(`Registration Unsuccessful`)
+            toast.error(`Registration Unsuccessful`);
             return state;
         }
     }
