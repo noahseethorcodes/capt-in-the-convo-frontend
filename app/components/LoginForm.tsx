@@ -28,17 +28,20 @@ export default function LoginForm() {
             password: formData.get("password"),
             callbackUrl: "/"
         });
+
         if (signInResponse?.ok) {
             toast.success("Logged In!")
             router.push("/convos");
+            return '';
         }
 
         if (signInResponse?.error) {
             toast.error("Login Failed")
             console.log(signInResponse.error);
             return signInResponse.error;
+        } else {
+            return "Sign In Failed";
         }
-        return "Sign In Failed";
     }
 
     const [formData, setFormData] = useState({ username: "", password: "" })
