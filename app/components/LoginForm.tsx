@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useActionState } from "react";
 import { signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
     Button,
     TextField,
@@ -16,29 +16,31 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { Login, PersonAdd } from "@mui/icons-material";
 
-async function handleLoginFormSubmit(
-    prevState: string,
-    formData: FormData
-) {
-    const signInResponse = await signIn("credentials", {
-        redirect: false,
-        username: formData.get("username"),
-        password: formData.get("password"),
-        callbackUrl: "/"
-    });
-    if (signInResponse?.ok) {
-        toast.success("Logged In!")
-        redirect("/convos");
-    }
-    toast.error("Login Failed")
-    if (signInResponse?.error) {
-        console.log(signInResponse.error);
-        return signInResponse.error;
-    }
-    return "Sign In Failed";
-}
-
 export default function LoginForm() {
+    const router = useRouter();
+    async function handleLoginFormSubmit(
+        prevState: string,
+        formData: FormData
+    ) {
+        const signInResponse = await signIn("credentials", {
+            redirect: false,
+            username: formData.get("username"),
+            password: formData.get("password"),
+            callbackUrl: "/"
+        });
+        if (signInResponse?.ok) {
+            toast.success("Logged In!")
+            router.push("/convos");
+        }
+
+        if (signInResponse?.error) {
+            toast.error("Login Failed")
+            console.log(signInResponse.error);
+            return signInResponse.error;
+        }
+        return "Sign In Failed";
+    }
+
     const [formData, setFormData] = useState({ username: "", password: "" })
     const [state, formAction, isPending] = useActionState(handleLoginFormSubmit, "");
     return (
