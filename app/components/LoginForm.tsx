@@ -30,8 +30,9 @@ export default function LoginForm() {
         });
 
         if (signInResponse?.ok) {
-            // Dirty fix for strange production error
-            globalThis.window.location.href = '/convos';
+            toast.success("Logged In!");
+            router.refresh();
+            router.push('/convos');
             return '';
         }
 
