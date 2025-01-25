@@ -18,7 +18,7 @@ export const authConfig: NextAuthOptions = {
                         throw new Error("Please enter both username and password.");
 
                     // Send login request to the backend
-                    const loginResponse = await axios.post("http://localhost:8080/auth/login", {
+                    const loginResponse = await axios.post(`${process.env.BACKEND_URL}/auth/login`, {
                         username: credentials.username,
                         password: credentials.password,
                     });
