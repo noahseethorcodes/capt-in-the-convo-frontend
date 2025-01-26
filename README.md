@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CAPTInTheConvo Frontend
 
-## Getting Started
+Welcome to the frontend for CAPTInTheConvo, a forum application built using Vercel's Next.js framework, based on React.js. This guide provides instructions on setting up the frontend and presumes your local backend has been set up successfully. You can find the backend repository [here](https://github.com/noahseethorcodes/capt-in-the-convo-backend/tree/dev). This application was developed for the NUS CVWO AY24/25 Winter Assignment.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Table of Contents
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. [Prerequisites](#prerequisites)
+2. [Local Setup](#local-setup)
+    - [Step 1: Clone the Repository](#step-1-clone-the-repository)
+    - [Step 2: Configure Environment Variables](#step-2-configure-environment-variables)
+    - [Step 3: Run the Application](#step-3-run-the-application)
+3. [Testing the Setup](#testing-the-setup)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Prerequisites
 
-## Learn More
+Before getting started, ensure you have the following installed on your system:
 
-To learn more about Next.js, take a look at the following resources:
+- **Node.js** (version 16.x or higher)
+- **npm** (version 7.x or higher)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Local Setup
 
-## Deploy on Vercel
+Follow these steps to set up the frontend on your local machine.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Step 1: Clone the Repository
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Clone the repository from GitHub:
+    ```bash
+    git clone https://github.com/noahseethorcodes/capt-in-the-convo-frontend.git
+    cd capt-in-the-convo-frontend
+    ```
+
+2. Switch to the development branch:
+    ```bash
+    git checkout dev
+    ```
+
+### Step 2: Configure Environment Variables
+
+1. Locate the `.env.example` file in the project root directory.
+
+2. Fill in the required details:
+    ```env
+    BACKEND_URL=YOUR_BACKEND_URL # usually http://localhost:8080
+    NEXTAUTH_SECRET=YOUR_SECRET_KEY # can be any random string
+    ```
+
+3. Rename the `.env.example` file to `.env.local`:
+    ```bash
+    mv .env.example .env.local
+    ```
+
+### Step 3: Run the Application
+
+1. Install dependencies:
+    ```bash
+    npm install
+    ```
+
+2. Start the application:
+    ```bash
+    npm run dev
+    ```
+
+3. The frontend should now be running on [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Testing the Setup
+
+To verify the setup:
+
+1. **Access the Login Page:**
+    - Open your browser and navigate to [http://localhost:3000/login](http://localhost:3000/login).
+    - Ensure the page loads without errors.
+
+2. **Test Authentication:**
+    - Register at the /register page and log in using the details you provided
+    - After logging in, verify that you are redirected to `/convos`.
+
+3. **Check API Connectivity:**
+    - On the `/convos` page, confirm that threads load successfully from the backend.
+    - This verifies the connection between the frontend and backend.
+
+---
+
+## Notes
+
+- Ensure the backend is running locally and accessible at the `BACKEND_URL` specified in your `.env.local` file.
